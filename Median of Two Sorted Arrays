@@ -1,0 +1,42 @@
+/**
+ * Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+ * The overall run time complexity should be O(log (m+n)).
+ */
+ 
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    int total_num_size = 0, i = 0, tmp = 0, j = 0, switcher = 0, half_num = 0, dummy = 0;
+    total_num_size = nums1Size + nums2Size;
+    int * total_nums = calloc(1,  (total_num_size << 2);
+    double result = 0.0;
+                              
+    if(nums1Size){
+        dummy = (nums1Size << 2);
+        memcpy(total_nums, nums1, dummy);
+    }
+    if(nums2Size){
+        dummy = (nums2Size << 2);
+        memcpy(&total_nums[nums1Size], nums2, dummy);
+    }
+    
+    half_num = total_num_size >> 1;
+    dummy = total_num_size - 1;
+    for(j = 0; j < total_num_size; j++){
+        switcher = (!(j & 1));
+        for(i = switcher; i < dummy; i+=2){
+            if(total_nums[i+1] < total_nums[i]){
+                tmp = total_nums[i];
+                total_nums[i] = total_nums[i + 1];
+                total_nums[i + 1] = tmp;
+            }
+        }
+    }
+
+    if(!(total_num_size & 1)){
+        result = ((double)total_nums[half_num] + (double)total_nums[half_num - 1]) / 2;
+    }
+    else{
+        result = (double)total_nums[half_num];
+    }
+    free(total_nums);
+    return result;
+}
