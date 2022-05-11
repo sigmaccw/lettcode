@@ -1,0 +1,56 @@
+/**
+ *  Given a sorted array of distinct integers and a target value, return the index if the target is found. 
+ *  If not, return the index where it would be if it were inserted in order.
+ *  You must write an algorithm with O(log n) runtime complexity.
+ */
+ 
+ #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int searchInsert(int* nums, int numsSize, int target) {
+    int target_index = numsSize >> 1;
+    int upper_bound = numsSize - 1;
+    int lower_bound = 0;
+    int tmp = 0;
+
+    if (nums[upper_bound] == target) {
+        return upper_bound;
+    }
+    else if (nums[upper_bound] < target) {
+        return upper_bound + 1;
+    }
+
+    if (nums[lower_bound] >= target) {
+        return lower_bound;
+    }
+
+    do {
+        if (nums[target_index] == target) {
+            return target_index;
+        }
+        else {
+            if (nums[target_index] < target) {
+                tmp = (target_index + upper_bound) >> 1;
+                lower_bound = target_index;
+            }
+            else {
+                tmp = (target_index + lower_bound) >> 1;
+                upper_bound = target_index;
+            }
+            if (((lower_bound == target_index) && (target_index == upper_bound)) || (upper_bound - lower_bound == 1)) {
+                return upper_bound;
+            }
+            target_index = tmp;
+        }
+    } while (1);
+    return -1;
+}
+
+int main()
+{
+    int nums[] = {1,3,5,6};
+    int target = 5;
+    printf("result = %d\n", searchInsert(nums, sizeof(nums) / sizeof(int), target));
+    return 0;
+}
