@@ -1,0 +1,52 @@
+/**
+ *  Given a positive integer num, write a function which returns True if num is a perfect square else False.
+ *  Follow up: Do not use any built-in library function such as sqrt.
+ */
+ 
+ #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+bool isPerfectSquare(int num){    
+    int upper_bound = num;
+    int lower_bound = 0;
+    long cur = num >> 1;
+    long mul = 0;
+    
+    if(num == 1){
+        return true;
+    }
+
+    do {
+        mul = (long)cur * (long)cur;
+        if (mul == num) {
+            return true;
+        }
+        else if(mul > num){
+            upper_bound = cur;
+        }
+        else if(mul < num){
+            lower_bound = cur;
+        }
+        cur = (lower_bound + upper_bound) >> 1;
+        if(upper_bound - lower_bound == 1){
+            return false;
+        }
+    } while (1);
+    return false;
+}
+
+int main(int argc, char *argv[])
+{
+    bool ret = false;
+    if(argc >= 2){
+        ret = isPerfectSquare(atoi(argv[1]));
+        if(ret == true){
+            printf("true\n");
+        }
+        else{
+            printf("false\n");
+        }
+    }
+    return 0;
+}
