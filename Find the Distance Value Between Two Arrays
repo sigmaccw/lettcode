@@ -1,0 +1,31 @@
+/**
+ *  Given two integer arrays arr1 and arr2, and the integer d, return the distance value between the two arrays.
+ *  The distance value is defined as the number of elements arr1[i] such that there is not any element arr2[j] where |arr1[i]-arr2[j]| <= d.
+ */
+ 
+ int findTheDistanceValue(int* arr1, int arr1Size, int* arr2, int arr2Size, int d){
+    int i = 0; 
+    int j = 0;
+    int ans = 0;
+    int ret = 0;
+    bool get = false;
+    for(i = 0; i < arr1Size; i++){
+        for(j = 0; j < arr2Size; j++){
+            ans = arr1[i] - arr2[j];
+            if(ans < 0){
+                ans *= -1;
+            }
+            if(ans <= d){
+                get = true;
+                break;
+            }
+        }
+        if(get == false){
+            ret++;
+        }
+        else{
+            get = false;
+        }
+    }
+    return ret;
+}
