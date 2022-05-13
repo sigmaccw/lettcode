@@ -1,0 +1,56 @@
+/**
+ *  Given a characters array letters that is sorted in non-decreasing order and a character target, 
+ *  return the smallest character in the array that is larger than target.
+ *  Note that the letters wrap around.
+ *  For example, if target == 'z' and letters == ['a', 'b'], the answer is 'a'.
+ */
+ 
+ #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char nextGreatestLetter(char* letters, int lettersSize, char target){
+    int target_index = lettersSize >> 1;
+    int upper_bound = lettersSize - 1;
+    int lower_bound = 0;
+    int tmp = 0;
+
+    if(target == 'z'){
+        target = 'a' - 1;
+    }
+    
+    if (letters[upper_bound] <= target) {
+        return letters[lower_bound];
+    }
+
+    if (letters[lower_bound] > target) {
+        return letters[lower_bound];
+    }
+
+    do {
+        if (letters[target_index] <= target) {
+            tmp = (target_index + upper_bound) >> 1;
+            lower_bound = target_index;
+        }
+        else if (letters[target_index] > target){
+            tmp = (target_index + lower_bound) >> 1;
+            upper_bound = target_index;
+        }
+        
+        if (((lower_bound == target_index) && (target_index == upper_bound)) || (upper_bound - lower_bound == 1)) {
+            return letters[upper_bound];
+        }
+        target_index = tmp;
+    } while (1);
+    return -1;
+}
+
+int main(int argc, char *argv[])
+{
+    char ret = 0;
+    char letters[] = { 'e', 'e', 'e', 'e', 'e', 'e', 'n', 'n', 'n', 'n'};
+    char target = 'n';
+    ret = nextGreatestLetter(letters, sizeof(letters), target);
+    printf("get %c\n", ret);
+    return 0;
+}
