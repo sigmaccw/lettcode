@@ -15,7 +15,7 @@
     }
 
     do {
-        mul = (long)cur * (long)cur;
+        mul = cur * cur;
         if (mul == x) {
             return cur;
         }
