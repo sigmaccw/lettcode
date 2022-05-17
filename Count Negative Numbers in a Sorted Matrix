@@ -1,0 +1,66 @@
+/**
+ *  Given a m x n matrix grid which is sorted in non-increasing order both row-wise and column-wise, return the number of
+ *  negative numbers in grid.
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int countRowNegatives(int *nums, int numsSize)
+{
+    int target_index = numsSize>> 1;
+    int upper_bound = numsSize - 1;
+    int lower_bound = 0;
+    int tmp = 0;
+
+    if(nums[upper_bound] >= 0){
+        return 0;
+    }
+    if(nums[lower_bound] < 0){
+        return numsSize;
+    }
+
+    do{
+        if(nums[target_index] >= 0){
+            lower_bound = target_index;
+        }
+        else{
+            upper_bound = target_index;
+        }
+        tmp = (upper_bound + lower_bound) >> 1;
+        if(((lower_bound == target_index) && (target_index == upper_bound)) || (upper_bound - lower_bound == 1)){
+            if(nums[upper_bound] < 0){
+                if(nums[lower_bound] < 0){
+                    return (numsSize - lower_bound);
+                }
+                else{
+                    return (numsSize - upper_bound);
+                }
+            }
+            else{
+                return (numsSize - upper_bound + 1);
+            }
+        }
+        target_index = tmp;
+    }while(1);
+    return -1;
+}
+
+int countNegatives(int grid[][5], int gridSize, int* gridColSize){
+    int sum = 0;
+    for(int i = 0; i < gridSize; i++){
+        sum += countRowNegatives(grid[i], gridColSize[i]);
+    }
+    return sum;
+}
+
+int main(int argc, char *argv[])
+{
+    //int grid[4][4] = {{4,3,2,-1},{3,2,1,-1},{1,1,-1,-2},{-1,-1,-2,-3}};
+    int grid[5][5] = {{4,3,3,1,1},{1,0,0,-1,-1},{-2,-2,-2,-2,-3},{-2,-2,-2,-3,-3},{-3,-3,-3,-3,-3}};
+    int gridColSoze[] = {5, 5, 5, 5, 5};
+    int ret = countNegatives(grid, 5, gridColSoze);
+    printf("ret = %d\n", ret);
+    return 0;
+}
