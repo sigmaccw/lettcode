@@ -1,0 +1,56 @@
+/**
+ *  Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the
+ *  following properties:
+ *  Integers in each row are sorted from left to right.
+ *  The first integer of each row is greater than the last integer of the previous row.
+ */
+ 
+ bool searchrow(int *nums, int numsSize, int target){
+    int target_index = numsSize >> 1;
+    int upper_bound = numsSize - 1;
+    int lower_bound = 0;
+    int tmp = 0;
+
+    if(nums[upper_bound] < target){
+        return false;
+    }
+    else if(nums[upper_bound] == target){
+        return true;
+    }
+    
+    if(nums[lower_bound] > target){
+        return false;
+    }
+    else if(nums[lower_bound] == target){
+        return true;
+    }
+    do{
+        if(nums[target_index] == target){
+            return true;
+        }
+        else{
+            if(nums[target_index] < target){
+                tmp = (target_index + upper_bound) >> 1;
+                lower_bound = target_index;
+            }
+            else{
+                tmp = (target_index + lower_bound) >> 1;
+                upper_bound = target_index;
+            }
+            if(((lower_bound == target_index) && (target_index == upper_bound)) || (upper_bound - lower_bound == 1)){
+                return false;
+            }
+            target_index = tmp;
+        }
+    }while(1);
+    return false;
+}
+
+bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target){
+    for(int i = 0; i < matrixSize; i++){
+        if(matrix[i][matrixColSize[i] - 1] >= target){
+            return searchrow(matrix[i], matrixColSize[i], target);
+        }
+    }
+    return false;
+}
