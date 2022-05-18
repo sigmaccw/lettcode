@@ -1,0 +1,64 @@
+/**
+ *  Given a string s, return the longest palindromic substring in s.
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+bool check_pal(char *s, int start, int end)
+{
+    while(start < end){
+        if(s[start] != s[end]){
+            return false;
+        }
+        else{
+            start++;
+            end--;
+        }
+    }
+    return true;
+}
+
+char * longestPalindrome(char * s){
+    int length = strlen(s);
+    char *ret = (char *)calloc(length + 1, sizeof(char));
+    int sublength = 0;
+    int i = 0;
+    int j = 0;
+    if(length == 1){
+        ret[0] = s[0];
+    }
+    else if(length > 1){
+        for(i = 0; i < length; i++){
+            for(j = length - 1; j > i; j--){
+                if(check_pal(s, i, j) == true){
+                    if(sublength < j - i + 1){
+                        memset(ret, 0, length);
+                        sublength = j - i + 1;
+                        strncpy(ret, &s[i], sublength);
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+        }
+        if(sublength == 0){
+            ret[0] = s[0];
+        }
+    }
+    return ret;
+}
+
+int main(int argc, char *argv[])
+{
+    char * input = (char *)"aaabaaaa";
+    char * ret = longestPalindrome(input);
+    printf("ret = %s\n", ret);
+    if(ret){
+        free(ret);
+    }
+    return 0;
+}
