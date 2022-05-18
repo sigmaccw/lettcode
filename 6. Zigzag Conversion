@@ -1,0 +1,82 @@
+/**
+ *  The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this
+ *  pattern in a fixed font for better legibility)
+ *
+ *  P   A   H   N
+ *  A P L S I I G
+ *  Y   I   R
+ *
+ *  And then read line by line: "PAHNAPLSIIGYIR"
+ *  string convert(string s, int numRows);
+ */ 
+ #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char * convert(char * s, int numRows)
+{
+    int length = strlen(s);
+    int i = 0, j = 0, k = 0, l = 0, row = 0;
+    char *result = (char *)calloc(length + 1, sizeof(char *));
+    if(numRows == 1 || numRows <= length){
+        memcpy(result, s, length);
+    }
+    else{
+        j = (numRows - 1) << 1;
+        k = 0;
+        l = 0;
+        do{
+            if(row == 0){
+                result[i] = s[l];
+                i++;
+                if(l + j > length - 1){
+                    row++;
+                    l = row;
+                    k = 0;
+                }
+                else{
+                    l+=j;
+                }
+            }
+            else if(row > 0 && row < numRows - 1){
+                result[i] = s[l];
+                i++;
+                l += j;
+                k = l - (row << 1);
+                if(k < length){
+                    result[i] = s[k];
+                    i++;
+                }
+                if(l >= length){
+                    row++;
+                    l = row;
+                    k = 0;
+                }
+            }
+            else{
+                result[i] = s[l];
+                i++;
+                if(l + j > length){
+                    break;
+                }
+                else{
+                    l+=j;
+                }
+            }
+        }while(1);
+    }
+    return result;
+}
+int main(int argc, char *argv[])
+{
+    char * s = (char *)"PAYPALISHIRING";
+    for(int row = 1; row < strlen(s) + 1; row++){
+        printf("================================ row = %d ================================\n", row);
+        char * result = convert(s, row);
+        printf("result[%d] = %s\n", strlen(result), result);
+        if(result){
+            free(result);
+        }
+    }
+    return 0;
+}
