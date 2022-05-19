@@ -1,0 +1,74 @@
+/**
+ *  Given a non-negative integer c, decide whether there're two integers a and b such that a2 + b2 = c.
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+bool isPerfectSquare(int num){    
+    int upper_bound = num;
+    int lower_bound = 0;
+    long cur = num >> 1;
+    long mul = 0;
+    
+    if(num == 0 || num == 1){
+        return true;
+    }
+
+    do {
+        mul = (long)cur * (long)cur;
+        if (mul == num) {
+            return true;
+        }
+        else if(mul > num){
+            upper_bound = cur;
+        }
+        else if(mul < num){
+            lower_bound = cur;
+        }
+        cur = (lower_bound + upper_bound) >> 1;
+        if(upper_bound - lower_bound == 1){
+            return false;
+        }
+    } while (1);
+    return false;
+}
+
+bool judgeSquareSum(int c){
+    int mul = 0;
+    int sub = 0;
+    if(c == 0 || c == 1){
+        return true;
+    }
+    for(int i = 0; i < c; i++){
+        mul = i * i;
+        sub = c - mul;
+        if(mul >= sub){
+            break;
+        }
+        if(isPerfectSquare(sub) == true){
+            return true;
+        }
+        
+    }
+    return false;
+}
+
+
+int main(int argc, char *argv[])
+{
+    int c = 3;
+    bool ret = false;
+    for(c = 0; c < 2147483647; c++){
+        ret = judgeSquareSum(c);
+        if(ret == true){
+            printf("c = %d, true\n", c);
+        }
+        else{
+            printf("c = %d, false\n", c);
+        }
+    }
+    
+    return 0;
+}
