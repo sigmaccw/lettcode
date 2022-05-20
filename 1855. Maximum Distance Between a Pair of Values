@@ -1,0 +1,66 @@
+/**
+ *  You are given two non-increasing 0-indexed integer arrays nums1​​​​​​ and nums2​​​​​​.
+ *  A pair of indices (i, j), where 0 <= i < nums1.length and 0 <= j < nums2.length, is valid if both i <= j and nums1[i] <= nums2[j]. 
+ *  The distance of the pair is j - i​​​​.
+ *  Return the maximum distance of any valid pair (i, j). If there are no valid pairs, return 0.
+ *  An array arr is non-increasing if arr[i-1] >= arr[i] for every 1 <= i < arr.length.
+ */
+ 
+ #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int search(int* nums, int numsSize, int target){
+    int target_index = numsSize >> 1;
+    int upper_bound = numsSize - 1;
+    int lower_bound = 0;
+    int tmp = 0;
+
+    if(nums[upper_bound] > target){
+        return -1;
+    }
+    if(nums[lower_bound] <= target){
+        return lower_bound;
+    }
+   
+    do{
+        if(nums[target_index] <= target){
+            upper_bound = target_index;
+        }
+        else if(nums[target_index] > target){
+            lower_bound = target_index;
+        }
+        tmp = (lower_bound + upper_bound) >> 1;
+        if(((lower_bound == target_index) && (target_index == upper_bound)) || (upper_bound - lower_bound == 1)){
+            return upper_bound;
+        }
+        target_index = tmp;
+    }while(1);
+    return -1;
+}
+
+int maxDistance(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    int max = 0, ret = 0;
+    int i = 0, j = 0, k = 0;
+    for(j = nums2Size - 1; j >= 0; j--){
+        ret = search(nums1, nums1Size, nums2[j]);
+        if(ret != -1){
+            printf("j = %d, i = %d\n", j, ret);
+            if((j - ret) > max){
+                max = j - ret;
+            }
+        }
+    }
+    return max;
+}
+
+
+int main(int argc, char *argv[])
+{
+    int nums1[] = { 2,2,2 };
+    int nums2[] = { 10,10,1 };
+    int ret = maxDistance(nums1, sizeof(nums1)/sizeof(int), nums2, sizeof(nums2)/sizeof(int));
+    printf("ret = %d\n", ret);
+    
+    return 0;
+}
