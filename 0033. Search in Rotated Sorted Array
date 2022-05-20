@@ -1,0 +1,83 @@
+/**
+ *  There is an integer array nums sorted in ascending order (with distinct values).
+ *
+ *  Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) 
+ *  such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). 
+ *  For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+ *
+ *  Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+ * 
+ *  You must write an algorithm with O(log n) runtime complexity.
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int search(int* nums, int numsSize, int target){
+    int upper_bound = numsSize - 1;
+    int lower_bound = 0;
+    int target_index = 0;
+    int ret = -1;
+    bool lower_rotate = false;
+    bool upper_rotate = false;
+
+    if(numsSize == 1){
+        if(nums[0] != target){
+            return -1;
+        }
+    }
+    if(target == nums[lower_bound]){
+        return lower_bound;
+    }
+    if(target == nums[upper_bound]){
+        return upper_bound;
+    }
+    target_index = (lower_bound + upper_bound) >> 1;
+    if(target == nums[target_index]){
+        return target_index;
+    }
+    if(nums[lower_bound] > nums[target_index]){
+        lower_rotate = true;
+    }
+    else if(nums[target_index] > nums[upper_bound]){
+        upper_rotate = true;
+    }
+    if(target > nums[lower_bound] && target < nums[target_index]){ // search lower bound
+        ret = search(&nums[lower_bound], target_index - lower_bound, target);
+        if(ret != -1){
+            ret += lower_bound;
+        }
+    }
+    else if(target > nums[target_index] && target < nums[upper_bound]){ // search upper bound
+        ret = search(&nums[target_index], upper_bound - target_index, target);
+        if(ret != -1){
+            ret += target_index;
+        }
+    }
+    else if(lower_rotate == true){ // search lower bound in rotate
+        ret = search(&nums[lower_bound], target_index - lower_bound, target);
+        if(ret != -1){
+            ret += lower_bound;
+        }
+    }
+    else if(upper_rotate == true){ // search upper bound in rotate
+        ret = search(&nums[target_index], upper_bound - target_index, target);
+        if(ret != -1){
+            ret += target_index;
+        }
+    }   
+    else{ // unknown situation
+        ret = -1;
+    }
+    return ret;
+}
+int main(int argc, char *argv[])
+{
+    int nums1[] = { 1 };
+    int target = 1;
+    int ret = search(nums1, sizeof(nums1)/sizeof(int), target);
+    printf("====== search %d = %d\n", target, ret);
+    
+    return 0;
+}
