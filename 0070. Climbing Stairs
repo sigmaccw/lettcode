@@ -1,0 +1,57 @@
+/**
+ *  You are climbing a staircase. It takes n steps to reach the top.
+ *  Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int climbStairs(int n){
+    int i = 0, n1, n2, newn;
+    char pnt = 0;
+
+    n1 = 1;
+    n2 = 2;
+
+    if(n == 1){
+        return n1;
+    }
+    else if(n == 2){
+        return n2;
+    }
+    
+    for(i = 3; i < n + 1; i++){
+        switch(pnt){
+            case 0:{
+                n1 = n1 + n2;
+                newn = n1;
+            }
+            break;
+            case 1:{
+                n2 = n1 + n2; 
+                newn = n2;
+            }
+            break;
+            default: break;
+        }
+        if(i == n){
+            return newn;
+        }
+        pnt++;
+        if(pnt == 2){
+            pnt = 0;
+        }
+    }
+    
+    return newn;
+
+}
+
+int main(int argc, char *argv[])
+{
+    int ret = climbStairs(45);
+    printf("====== ret = %d\n", ret);
+    
+    return 0;
+}
