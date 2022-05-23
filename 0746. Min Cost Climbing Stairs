@@ -1,0 +1,36 @@
+/**
+ *  You are given an integer array cost where cost[i] is the cost of ith step on a staircase. Once you pay the cost, you
+ *  can either climb one or two steps.
+ *  You can either start from the step with index 0, or the step with index 1.
+ *  Return the minimum cost to reach the top of the floor.
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int minCostClimbingStairs(int* cost, int costSize){
+    int num1 = cost[0], num2 = cost[1];
+    int i = 0, tmp = 0;
+    if(costSize<=2) {
+        if(cost[0] <= cost[1]){
+            return cost[0];
+        }
+        else{
+            return cost[1];
+        }
+    }
+    for(i = 2; i < costSize; i++){
+        tmp = cost[i] + fmin(num1,num2);
+        num1 = num2;
+        num2 = tmp;
+    }
+    return fmin(num1, num2);
+}
+
+int main()
+{
+    int cost[] = { 10, 15, 20 };
+    int ret = minCostClimbingStairs(cost, sizeof(cost)/sizeof(int));
+    return 0;
+}
