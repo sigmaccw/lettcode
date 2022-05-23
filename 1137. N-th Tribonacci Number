@@ -1,0 +1,66 @@
+/**
+ *  The Tribonacci sequence Tn is defined as follows: 
+ *  T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+ *  Given n, return the value of Tn.
+ */
+ 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int tribonacci(int n){
+    int i = 0, n1, n2, n3, newn;
+    char pnt = 0;
+
+    n1 = 0;
+    n2 = 1;
+    n3 = 1;
+
+    if(n == 0){
+        return n1;
+    }
+    else if(n == 1){
+        return n2;
+    }
+    else if(n == 2){
+        return n3;
+    }
+    
+    for(i = 3; i < n + 1; i++){
+        switch(pnt){
+            case 0:{
+                n1 = n1 + n2 + n3;
+                newn = n1;
+            }
+            break;
+            case 1:{
+                n2 = n1 + n2 + n3; 
+                newn = n2;
+            }
+            break;
+            case 2:{
+                n3 = n1 + n2 + n3;
+                newn = n3;
+            }
+            break;
+            default: break;
+        }
+        if(i == n){
+            return newn;
+        }
+        pnt++;
+        if(pnt == 3){
+            pnt = 0;
+        }
+    }
+    
+    return newn;
+}
+
+int main(int argc, char *argv[])
+{
+    int ret = tribonacci(25);
+    printf("====== ret = %d\n", ret);
+    
+    return 0;
+}
